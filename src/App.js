@@ -1,22 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { getStuff } from "./regularAsyncModule";
 import { loadXHR, blobToBase64, sleep } from "./helpers";
+import { useThisHook } from "./useThisHook";
 
 function App() {
   const [base64ImageProcessed, setBase64ImageProcessed] = useState("");
   const [base64ImageOriginal, setBase64ImageOriginal] = useState("");
 
-  useEffect(() => {
-    const doProcessing = async () => {
-      console.log("the original is ready for processing");
-      const result = await getStuff(base64ImageOriginal);
-      setBase64ImageProcessed(result);
-    };
-
-    if (base64ImageOriginal) {
-      doProcessing();
-    }
-  }, [base64ImageOriginal]);
+  useThisHook(base64ImageOriginal, setBase64ImageProcessed);
 
   const clickMe = async () => {
     console.log("I will load the original");
