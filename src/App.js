@@ -2,7 +2,32 @@ import React, { useState, useEffect } from "react";
 import { getStuff } from "./regularAsyncModule";
 import { loadXHR, blobToBase64, sleep } from "./helpers";
 
+import Uppy from "@uppy/core";
+import FileInput from "@uppy/file-input";
+
+const uppy = new Uppy();
+uppy.use(FileInput, {
+  // Options
+});
+
 function App() {
+  const doSomethingWithFirstFile = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const uploadedFile = e.target.files[0];
+
+      // const fileReader = new FileReader();
+      // fileReader.onloadend = () => {
+      //   if (fileReader.result) {
+      //     // as specified in the readme it is assumed any uploaded file will be a well formed taps.json
+      //     setTapsInput((JSON.parse(fileReader.result as string) as TapContainer).taps);
+      //   }
+      // };
+      // if (uploadedFile !== undefined) {
+      //   fileReader.readAsText(uploadedFile);
+      // }
+    }
+  };
+
   const [base64ImageProcessed, setBase64ImageProcessed] = useState("");
   const [base64ImageOriginal, setBase64ImageOriginal] = useState("");
 
@@ -44,6 +69,11 @@ function App() {
 
         <p>
           <button onClick={clickMe}>Load then process card</button>
+        </p>
+
+        <p>
+          Do something with first file uploaded
+          <input type="file" onChange={(e) => doSomethingWithFirstFile(e)} />
         </p>
       </header>
     </div>
