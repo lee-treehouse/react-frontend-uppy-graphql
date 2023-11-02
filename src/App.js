@@ -21,7 +21,7 @@ function App() {
   const clickMe = async () => {
     console.log("I will load the original");
 
-    await sleep(2000);
+    await sleep(1000);
 
     const myBlob = await loadXHR("/creditcard.png");
     const myBase64 = await blobToBase64(myBlob);
@@ -43,19 +43,8 @@ function App() {
         )}
 
         <p>
-          <button onClick={clickMe}>Click Me</button>
+          <button onClick={clickMe}>Load then process card</button>
         </p>
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
       </header>
     </div>
   );
