@@ -14,6 +14,7 @@ export const getStuff = async (original) => {
 };
 
 
+// https://www.taniarascia.com/graphql-server-node/
 async function queryGraphQLServer() {
   const response = await fetch('http://localhost:4000/graphql', {
     method: 'POST',
