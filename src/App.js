@@ -6,9 +6,9 @@ import React, { useState, useEffect } from "react";
 import { getStuff } from "./regularAsyncModule";
 import { loadXHR, blobToBase64, sleep } from "./helpers";
 
-const GET_LOCATIONS = gql`
-  query GetLocations {
-    warriors {
+const GET_WARRIOR = gql`
+  query GetWarrior($id: String!) {
+    warrior(id: $id) {
       id
       name
       data
@@ -18,15 +18,18 @@ const GET_LOCATIONS = gql`
 
 
 function App() {
+  const [warriorFilter, setWarriorFilter] = useState("");
+
   const [base64ImageProcessed, setBase64ImageProcessed] = useState("");
   const [base64ImageOriginal, setBase64ImageOriginal] = useState("");
 
 
-  const { loading, error, data } = useQuery(GET_LOCATIONS);
+  const { loading, error, data} = useQuery(GET_WARRIOR, {variables: {id: warriorFilter}});
 
 
   useEffect(() => {
     console.log("I fire when data changes")
+    console.log(data)
   }, [data]);
 
 
@@ -65,14 +68,17 @@ function App() {
       {error && (<p>Error! {error.message}</p>)}
 
 
-      {data && data.warriors &&  data.warriors.map(({ id, name, data}) => (
-      <div key={id}>
-        <h3>{name}</h3>
-        <img src={data} className="App-logo" alt="logo" />
+      {data?.warrior && (
+      <div key={data.warrior.id}>
+        <h3>{data.warrior.name}</h3>
+        <img src={data.warrior.data} className="App-logo" alt="logo" />
      </div>
-      ))}
+      )}
 
 
+<p>
+          <button onClick={() => setWarriorFilter("001")}>filter warrior</button>
+        </p>
 
 
 
