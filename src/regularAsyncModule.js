@@ -1,14 +1,31 @@
-import { loadXHR, blobToBase64, sleep } from "./helpers";
+import { sleep } from "./helpers";
+
 
 export const getStuff = async (original) => {
-  console.log("now i'll get the redacted");
+   console.log("now i'll get the redacted");
 
-  await sleep(3000);
+   await sleep(2000);
 
-  const myBlob = await loadXHR("/creditcard_redacted.png");
-  const myBase64 = await blobToBase64(myBlob);
+  const dataFromGraphQL = await queryGraphQLServer();
 
   console.log("now I have loaded the redacted");
 
-  return myBase64;
+   return dataFromGraphQL;
 };
+
+
+async function queryGraphQLServer() {
+  const response = await fetch('http://localhost:4000/graphql', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      query: '{ warriors { data } }',
+    }),
+  })
+  const data = await response.json()
+  
+  return data.data.warriors[0].data
+}
+
