@@ -1,32 +1,35 @@
 
-import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
+// Import everything needed to use the `useQuery` hook
+import { useQuery, gql } from '@apollo/client';
+
 import React, { useState, useEffect } from "react";
 import { getStuff } from "./regularAsyncModule";
 import { loadXHR, blobToBase64, sleep } from "./helpers";
 
-const client = new ApolloClient({
-  uri: 'https://flyby-router-demo.herokuapp.com/',
-  cache: new InMemoryCache(),
-});
+const GET_LOCATIONS = gql`
+  query GetLocations {
+    warriors {
+      id
+      name
+      data
+    }
+  }
+`;
+
 
 function App() {
   const [base64ImageProcessed, setBase64ImageProcessed] = useState("");
   const [base64ImageOriginal, setBase64ImageOriginal] = useState("");
 
-  client
-  .query({
-    query: gql`
-      query GetLocations {
-        locations {
-          id
-          name
-          description
-          photo
-        }
-      }
-    `,
-  })
-  .then((result) => console.log(result));
+
+  const { loading, error, data } = useQuery(GET_LOCATIONS);
+
+
+  useEffect(() => {
+    console.log("I fire when data changes")
+  }, [data]);
+
+
 
   useEffect(() => {
     const doProcessing = async () => {
@@ -55,6 +58,24 @@ function App() {
 
   return (
     <div className="App">
+      
+
+      {loading && (<p>Loading</p>)}
+      
+      {error && (<p>Error! {error.message}</p>)}
+
+
+      {data && data.warriors &&  data.warriors.map(({ id, name, data}) => (
+      <div key={id}>
+        <h3>{name}</h3>
+        <img src={data} className="App-logo" alt="logo" />
+     </div>
+      ))}
+
+
+
+
+
       <header className="App-header">
         {base64ImageOriginal && !base64ImageProcessed && (
           <img src={base64ImageOriginal} className="App-logo" alt="logo" />
