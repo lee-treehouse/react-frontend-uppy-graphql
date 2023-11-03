@@ -1,10 +1,32 @@
+
+import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
 import React, { useState, useEffect } from "react";
 import { getStuff } from "./regularAsyncModule";
 import { loadXHR, blobToBase64, sleep } from "./helpers";
 
+const client = new ApolloClient({
+  uri: 'https://flyby-router-demo.herokuapp.com/',
+  cache: new InMemoryCache(),
+});
+
 function App() {
   const [base64ImageProcessed, setBase64ImageProcessed] = useState("");
   const [base64ImageOriginal, setBase64ImageOriginal] = useState("");
+
+  client
+  .query({
+    query: gql`
+      query GetLocations {
+        locations {
+          id
+          name
+          description
+          photo
+        }
+      }
+    `,
+  })
+  .then((result) => console.log(result));
 
   useEffect(() => {
     const doProcessing = async () => {
