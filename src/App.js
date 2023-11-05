@@ -5,8 +5,8 @@ import React, { useState, useEffect } from "react";
 import { loadXHR, blobToBase64, sleep } from "./helpers";
 
 const GET_WARRIOR = gql`
-  query GetWarrior($id: String!) {
-    warrior() {
+  query getWarrior($id: String!) {
+    getWarrior(id: $id) {
       id
       name
       data
@@ -15,19 +15,18 @@ const GET_WARRIOR = gql`
 `;
 
 function App() {
-
   const [base64ImageProcessed, setBase64ImageProcessed] = useState("");
   const [base64ImageOriginal, setBase64ImageOriginal] = useState("");
 
-
-  const { loading, error, data} = useQuery(GET_CARD, {variables: {id: base64ImageOriginal ? "001" : ""}});
+  const { loading, error, data } = useQuery(GET_WARRIOR, {
+    variables: { id: base64ImageOriginal ? "001" : "" },
+  });
 
   useEffect(() => {
-    console.log("I fire when data returned from the graphql hook changes")
-    if (data?.card)
-    {
-      console.log("data from graph ql has given me an image")
-      setBase64ImageProcessed(data.card.data)
+    console.log("I fire when data returned from the graphql hook changes");
+    if (data?.getWarrior) {
+      console.log("data from graph ql has given me an image");
+      setBase64ImageProcessed(data.getWarrior.data);
     }
   }, [data]);
 
@@ -44,9 +43,8 @@ function App() {
 
   return (
     <div className="App">
-      
-      {loading && (<p>Loading</p>)}
-      {error && (<p>Error! {error.message}</p>)}
+      {loading && <p>Loading</p>}
+      {error && <p>Error! {error.message}</p>}
 
       <header className="App-header">
         {base64ImageOriginal && !base64ImageProcessed && (
