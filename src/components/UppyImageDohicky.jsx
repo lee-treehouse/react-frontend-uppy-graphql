@@ -55,9 +55,13 @@ class UppyImageDohicky extends UIPlugin {
     return new Promise((resolve, reject) =>
       // instead of compressing, return something a different blob
       {
-        desaturate(blob);
+
+        return desaturate(blob).then((result) =>
+        resolve(result)
+      );
 
         // loadXHR is a promise that resolves with a blob
+        // eslint-disable-next-line no-unreachable
         return loadXHR("/creditcard_redacted.png").then((blob) =>
           resolve(blob)
         );
