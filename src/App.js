@@ -3,7 +3,7 @@ import FileUpload from "./components/FileUpload";
 import UppyUpload from "./components/UppyUpload";
 
 function App() {
-  const showFileUpload = false;
+  const showFileUpload = true;
   return (
     <>
       {showFileUpload && <FileUpload />}

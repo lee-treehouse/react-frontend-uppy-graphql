@@ -5,14 +5,24 @@ import React, { useState, useEffect } from "react";
 import { loadXHR, blobToBase64, sleep } from "../helpers";
 
 const GET_WARRIOR = gql`
-  query getWarrior($id: String!) {
-    getWarrior(id: $id) {
+  query asyncGetWarrior($id: String!) {
+    asyncGetWarrior(id: $id) {
       id
       name
       data
     }
   }
 `;
+
+// const GET_WARRIOR = gql`
+//   query getWarrior($id: String!) {
+//     getWarrior(id: $id) {
+//       id
+//       name
+//       data
+//     }
+//   }
+// `;
 
 function FileUpload() {
   const [base64ImageProcessed, setBase64ImageProcessed] = useState("");
@@ -27,6 +37,10 @@ function FileUpload() {
     if (data?.getWarrior) {
       console.log("data from graph ql has given me an image");
       setBase64ImageProcessed(data.getWarrior.data);
+    }
+    if (data?.asyncGetWarrior) {
+      console.log("data from graph ql has given me an image");
+      setBase64ImageProcessed(data.asyncGetWarrior.data);
     }
   }, [data]);
 
