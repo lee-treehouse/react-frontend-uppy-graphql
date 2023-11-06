@@ -101,7 +101,19 @@ class UppyImageDohicky extends UIPlugin {
           this.uppy.log(
             `[Image Compressor] Image ${file.id} size before/after compression: ${file.data.size} / ${compressedBlob.size}`
           );
-          this.uppy.setFileState(fileID, { data: compressedBlob });
+          
+          // for the sake of argument, what if we did addFile instead of setFileState
+          this.uppy.addFile({
+            source: 'vi',
+            name: 'desaturated',
+            type: 'image/jpeg',
+            data: new File([compressedBlob], { type: 'image/jpeg' }),
+          })
+         
+          this.uppy.removeFile(fileID)
+
+         
+          //this.uppy.setFileState(fileID, { data: compressedBlob });
         })
         .catch((err) => {
           this.uppy.log(
