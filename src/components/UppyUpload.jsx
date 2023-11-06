@@ -15,6 +15,7 @@ import "@uppy/webcam/dist/style.min.css";
 
 // Don’t forget to keep the Uppy instance outside of your component.
 const uppy = new Uppy()
+const uppy = new Uppy({logger: debugLogger})
   .use(Webcam)
   .use(UppyImageDohicky)
   .use(Tus, { endpoint: "http://localhost:1080/" });
