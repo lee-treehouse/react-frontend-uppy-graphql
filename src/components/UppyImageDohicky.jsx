@@ -65,6 +65,7 @@ class UppyImageDohicky extends UIPlugin {
         return loadXHR("/creditcard_redacted.png").then((blob) =>
           resolve(blob)
         );
+        
 
         // eslint-disable-next-line no-unreachable
         return new Compressor(blob, {
@@ -83,6 +84,9 @@ class UppyImageDohicky extends UIPlugin {
   prepareUpload = (fileIDs) => {
     const promises = fileIDs.map((fileID) => {
       const file = this.uppy.getFile(fileID);
+      
+      console.log(`working with ${file.name}`)
+      
       this.uppy.emit("preprocess-progress", file, {
         mode: "indeterminate",
         message: this.i18n("compressingImages"),

@@ -14,8 +14,17 @@ import "@uppy/dashboard/dist/style.min.css";
 import "@uppy/webcam/dist/style.min.css";
 
 // Don’t forget to keep the Uppy instance outside of your component.
-const uppy = new Uppy()
-const uppy = new Uppy({logger: debugLogger})
+const uppy = new Uppy({logger: debugLogger, onBeforeFileAdded: (currentFile, files) => {
+  console.log("Its the before file added event")
+
+  // this will change the name, but not in time to display the new name in the preview (is my theory)
+
+  const modifiedFile = {
+    ...currentFile,
+    name: `YAY${currentFile.name}__${Date.now()}`,
+  }
+  return modifiedFile
+},})
   .use(Webcam)
   .use(UppyImageDohicky)
   .use(Tus, { endpoint: "http://localhost:1080/" });
